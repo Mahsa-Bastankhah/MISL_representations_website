@@ -16,26 +16,70 @@
       --link: #2563eb;
       --link-hover: #1d4ed8;
       --surface: #f9fafb;
+      --header-height: 90px; /* Space reserved for the sticky title */
     }
 
     * {
       box-sizing: border-box;
     }
 
-    body {
+    /* Enable scroll snapping on the container */
+    html, body {
       margin: 0;
-      min-height: 100vh;
+      height: 100%;
       font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
       font-size: 1.0625rem;
       line-height: 1.55;
       color: var(--text);
       background: var(--bg);
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    /* Sticky Title Styling */
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--header-height);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+    }
+
+    .sticky-header h1 {
+      max-width: 58rem;
+      margin: 0 auto;
+      width: 100%;
+      font-size: clamp(1.1rem, 1.5vw + 0.6rem, 1.6rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+
+    /* Scroll Snap Sections */
+    .snap-section {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      min-height: 100vh;
+      padding-top: calc(var(--header-height) + 2rem);
+      padding-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .page {
       max-width: 58rem;
       margin: 0 auto;
-      padding: 2.25rem clamp(1.25rem, 4vw, 2.5rem) 4rem;
+      width: 100%;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
     }
 
     .venue-line {
@@ -51,15 +95,6 @@
       border-radius: 0.3em;
       padding: 0.2em 0.6em;
       letter-spacing: 0.04em;
-    }
-
-    h1 {
-      font-size: clamp(1.5rem, 2.2vw + 0.8rem, 2.1rem);
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.03em;
-      margin: 0 0 1.25rem;
-      text-wrap: balance;
     }
 
     .authors {
@@ -130,10 +165,10 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem 0.65rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
     }
 
-    .actions a {
+    .actions a, .action-btn {
       display: inline-flex;
       align-items: center;
       padding: 0.5rem 0.95rem;
@@ -146,7 +181,7 @@
       background: #ffffff;
     }
 
-    .actions a:hover {
+    .actions a:hover, .action-btn:hover {
       border-color: #cbd5e1;
       background: var(--surface);
     }
@@ -163,22 +198,8 @@
     }
 
     .action-btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.5rem 0.95rem;
-      font-size: 0.95rem;
-      font-weight: 500;
       font-family: inherit;
-      color: var(--text);
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
       cursor: pointer;
-    }
-
-    .action-btn:hover {
-      border-color: #cbd5e1;
-      background: var(--surface);
     }
 
     .code-note {
@@ -201,98 +222,13 @@
       display: none;
     }
 
-    section {
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-    }
-
-    section h2 {
+    h2 {
       font-size: 0.875rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.07em;
       color: #374151;
       margin: 0 0 1.1rem;
-    }
-
-    .result-row {
-      display: grid;
-      grid-template-columns: 2fr 3fr;
-      gap: 2rem;
-      align-items: center;
-      margin-bottom: 3rem;
-    }
-
-    .result-row.flip {
-      grid-template-columns: 3fr 2fr;
-    }
-
-    .result-row.flip .result-figure {
-      order: 2;
-    }
-
-    .result-row.flip .result-notes {
-      order: 1;
-    }
-
-    @media (max-width: 640px) {
-      .result-row,
-      .result-row.flip {
-        grid-template-columns: 1fr;
-      }
-      .result-row.flip .result-figure,
-      .result-row.flip .result-notes {
-        order: unset;
-      }
-    }
-
-    .result-figure img {
-      height: auto;
-      border: 1px solid var(--border);
-      border-radius: 0.4rem;
-      display: block;
-    }
-
-    #fig1 img { width: 320px; }
-    #fig2 img { width: 820px; max-width: 100%; }
-    #fig-geom img { width: 480px; max-width: 100%; }
-
-    .result-centered {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 3rem;
-    }
-
-    .result-notes-below {
-      display: inline-block;
-      width: auto;
-      max-width: 820px;
-      margin-top: 1rem;
-      text-align: left;
-    }
-
-    .result-caption {
-      margin-top: 0.5rem;
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    .result-notes {
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      border-radius: 0.4rem;
-      padding: 1rem 1.1rem;
-      min-height: unset;
-      font-size: 1.05rem;
-      color: var(--text);
-      line-height: 1.65;
-    }
-
-    .result-notes.result-notes-below {
-      min-height: unset;
     }
 
     .abstract p {
@@ -305,6 +241,7 @@
       margin-bottom: 0;
     }
 
+    /* Video Player Modifications */
     .video-wrap {
       margin-top: 0.5rem;
       border-radius: 0.5rem;
@@ -327,29 +264,27 @@
       width: 100%;
       max-width: 100%;
       height: auto;
-      min-height: 12rem;
+      max-height: 50vh; /* Prevents video from pushing bibtex off-screen */
       background: #000;
     }
 
-    .video-fallback {
-      margin: 0.5rem 0 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.4;
+    /* Small Font BibTeX Below Video */
+    .bibtex-container {
+      margin-top: 1.5rem;
     }
-
-    .video-fallback a {
-      color: var(--link);
+    
+    .bibtex-container h2 {
+      margin-bottom: 0.5rem;
     }
 
     .bibtex {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 0.4rem;
-      padding: 1.1rem 1.25rem;
+      padding: 0.75rem 1rem;
       font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-      font-size: 0.875rem;
-      line-height: 1.7;
+      font-size: 0.75rem; /* Shrunk font size */
+      line-height: 1.5;
       color: var(--text);
       overflow-x: auto;
       white-space: pre;
@@ -358,69 +293,76 @@
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <p class="venue-line"><span class="venue">ICML 2026</span></p>
-      <h1>Learning to Perceive the World Through Control: Empowerment-Based Representation Learning</h1>
-      <div class="authors">
-        <p class="author-names">
-          <a href="https://sites.google.com/view/mahsabastankhah/home">Mahsa Bastankhah</a><span class="corr">*</span><span class="sep">,</span>
-          <a href="https://sophiebroderick.com/">Sophie Broderick</a><span class="sep">,</span>
-          <a href="https://www.cs.princeton.edu/~eysenbach">Benjamin Eysenbach</a>
+
+  <div class="sticky-header">
+    <h1>Learning to Perceive the World Through Control: Empowerment-Based Representation Learning</h1>
+  </div>
+
+  <div class="snap-section">
+    <div class="page">
+      <header>
+        <p class="venue-line"><span class="venue">ICML 2026</span></p>
+        <div class="authors">
+          <p class="author-names">
+            <a href="https://sites.google.com/view/mahsabastankhah/home">Mahsa Bastankhah</a><span class="corr">*</span><span class="sep">,</span>
+            <a href="https://sophiebroderick.com/">Sophie Broderick</a><span class="sep">,</span>
+            <a href="https://www.cs.princeton.edu/~eysenbach">Benjamin Eysenbach</a>
+          </p>
+          <p class="author-emails">
+            <a href="mailto:mb6458@princeton.edu">mb6458@princeton.edu</a><span class="sep">·</span>
+            <a href="mailto:sophiebroderick@princeton.edu">sophiebroderick@princeton.edu</a><span class="sep">·</span>
+            <a href="mailto:eysenbach@princeton.edu">eysenbach@princeton.edu</a>
+          </p>
+        </div>
+        <p class="corr-note"><span class="corr">*</span> Corresponding author</p>
+        <p class="affil">
+          <img src="princeton-logo.png" alt="Princeton University" width="220" height="44" />
         </p>
-        <p class="author-emails">
-          <a href="mailto:mb6458@princeton.edu">mb6458@princeton.edu</a><span class="sep">·</span>
-          <a href="mailto:sophiebroderick@princeton.edu">sophiebroderick@princeton.edu</a><span class="sep">·</span>
-          <a href="mailto:eysenbach@princeton.edu">eysenbach@princeton.edu</a>
+
+        <nav class="actions" aria-label="Paper links">
+          <a class="primary" href="https://arxiv.org/pdf/2605.30656">PDF</a>
+          <a href="#presentation-section">Video & BibTeX</a>
+          <a href="https://openreview.net/">OpenReview</a>
+          <button class="action-btn" onclick="document.getElementById('code-note').classList.toggle('hidden')">Code</button>
+        </nav>
+        <div id="code-note" class="code-note hidden">
+          The empowerment representations are trained using the codebase of
+          <a href="https://seohong.me/projects/metra/" target="_blank" rel="noopener">METRA</a>.
+          For more information about the details, contact
+          <a href="mailto:mb6458@princeton.edu">mb6458@princeton.edu</a>.
+        </div>
+      </header>
+
+      <section class="abstract">
+        <h2>Lay Summary</h2>
+        <p>
+          Most real-world reinforcement learning problems involve very high-dimensional observations that contain many irrelevant details and distractors. For example, a robot navigating a room should focus on walls, doors, and obstacles—not the color of the floor or changing lighting conditions. In reinforcement learning, however, the agent must collect its own data through directed exploration, which becomes especially challenging when observations are noisy and cluttered, since it is difficult to tell which aspects of the environment are meaningful and under the agent's control versus which are simply noise.
         </p>
-      </div>
-      <p class="corr-note"><span class="corr">*</span> Corresponding author</p>
-      <p class="affil">
-        <img src="princeton-logo.png" alt="Princeton University" width="220" height="44" />
-      </p>
+        <p>
+          In this work, we show that <em>Empowerment</em>—an objective that measures how much influence an agent has over its environment—provides a principled way to learn concise representations that capture only the aspects of the environment that matter for control while ignoring irrelevant distractors. We show this property both theoretically and empirically. This makes empowerment a great candidate for unsupervised RL representation learning because it prescribes how to collect data and how to learn representations at the same time.
+        </p>
+      </section>
+    </div>
+  </div>
 
-      <nav class="actions" aria-label="Paper links">
-        <a class="primary" href="paper.pdf">PDF</a>
-        <a href="#bibtex">BibTeX</a>
-        <a href="https://openreview.net/">OpenReview</a>
-        <button class="action-btn" onclick="document.getElementById('code-note').classList.toggle('hidden')">Code</button>
-      </nav>
-      <div id="code-note" class="code-note hidden">
-        The empowerment representations are trained using the codebase of
-        <a href="https://seohong.me/projects/metra/" target="_blank" rel="noopener">METRA</a>.
-        For more information about the details, contact
-        <a href="mailto:mb6458@princeton.edu">mb6458@princeton.edu</a>.
-      </div>
-    </header>
+  <div class="snap-section" id="presentation-section">
+    <div class="page">
+      <section>
+        <h2>Presentation</h2>
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/OybzPsRrM50?rel=0"
+            title="Learning to Perceive the World Through Control (ICML 2026)"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
 
-    <section class="abstract">
-      <h2>Lay Summary</h2>
-      <p>
-        Most real-world reinforcement learning problems involve very high-dimensional observations that contain many irrelevant details and distractors. For example, a robot navigating a room should focus on walls, doors, and obstacles—not the color of the floor or changing lighting conditions. In reinforcement learning, however, the agent must collect its own data through directed exploration, which becomes especially challenging when observations are noisy and cluttered, since it is difficult to tell which aspects of the environment are meaningful and under the agent's control versus which are simply noise.
-      </p>
-      <p>
-        In this work, we show that <em>Empowerment</em>—an objective that measures how much influence an agent has over its environment—provides a principled way to learn concise representations that capture only the aspects of the environment that matter for control while ignoring irrelevant distractors. In this work, we show that Empowerment—an objective that measures how much influence an agent has over its environment—provides a principled way to learn concise representations that capture only the aspects of the environment that matter for control while ignoring irrelevant distractors. We show this property both theoretically and emperically. This makes empowerment a great candidate for unsupervised RL representation learning because it prescribe how to collect data and how to learn representations at the same time.
-      </p>
-      <p>
-        Finally, we demonstrate that these representations improve performance on downstream tasks, particularly in environments with noisy or distracting observations.
-      </p>
-    </section>
-
-    <section>
-      <h2>Presentation</h2>
-      <div class="video-wrap" style="margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); border-radius: 0;">
-        <iframe
-          src="https://www.youtube.com/embed/OybzPsRrM50?rel=0"
-          title="Presentation"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </section>
-
-    <section id="bibtex">
-      <h2>BibTeX</h2>
-      <pre class="bibtex"><code>@inproceedings{bastankhah2026empowerment,
+      <section class="bibtex-container" id="bibtex">
+        <h2>BibTeX</h2>
+        <pre class="bibtex"><code>@inproceedings{bastankhah2026empowerment,
   title     = {Learning to Perceive the World Through Control:
                Empowerment-Based Representation Learning},
   author    = {Bastankhah, Mahsa and Broderick, Sophie and Eysenbach, Benjamin},
@@ -429,7 +371,8 @@
   publisher = {PMLR},
   year      = {2026},
 }</code></pre>
-    </section>
+      </section>
+    </div>
   </div>
 </body>
 </html>
